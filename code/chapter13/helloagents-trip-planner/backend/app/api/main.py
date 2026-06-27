@@ -51,6 +51,16 @@ async def startup_event():
         print("\n请检查.env文件并确保所有必要的配置项都已设置")
         raise
     
+    # 预先初始化多智能体系统,避免首次请求延迟
+    print("\n🔄 预初始化多智能体系统...")
+    try:
+        from ..agents.trip_planner_agent import get_trip_planner_agent
+        get_trip_planner_agent()
+        print("✅ 多智能体系统预初始化完成")
+    except Exception as e:
+        print(f"⚠️  多智能体系统预初始化失败: {str(e)}")
+        print("   将在首次请求时初始化")
+    
     print("\n" + "="*60)
     print("📚 API文档: http://localhost:8000/docs")
     print("📖 ReDoc文档: http://localhost:8000/redoc")
